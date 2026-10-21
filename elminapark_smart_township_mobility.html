@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ElminaPark - Smart Township Mobility</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#032117',
+                            cardDark: '#0a3326',
+                            green: '#10b981',
+                            lightGreen: '#00a86b',
+                            accent: '#10b981',
+                            bg: '#f3f6f4',
+                            surface: '#ffffff',
+                            border: '#e2e8f0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #1a1a1a;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Mobile Device Frame Simulation for Desktop Preview */
+        .phone-container {
+            max-width: 430px;
+            height: 100vh;
+            max-height: 932px;
+            margin: 0 auto;
+            position: relative;
+            background-color: #f3f6f4;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        @media (min-width: 640px) {
+            .phone-container {
+                height: 880px;
+                border-radius: 40px;
+                border: 12px solid #1f2937;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-slate-900">
+
+    <!-- Mobile Screen Frame -->
+    <div class="phone-container w-full text-slate-800">
+
+        <!-- Top App Bar / Header -->
+        <header class="bg-brand-dark text-white px-4 pt-4 pb-3 flex items-center justify-between shadow-md z-20 shrink-0">
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                    <i class="fa-solid font-bold fa-car"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base tracking-tight leading-none text-white">ElminaPark</h1>
+                    <p class="text-[10px] text-emerald-400 font-medium tracking-wide">Smart township mobility</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1 bg-emerald-950/80 border border-emerald-800/60 px-2.5 py-1 rounded-full text-[10px] text-emerald-400 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Live system</span>
+                </div>
+                <button onclick="toggleUserModal()" class="w-8 h-8 rounded-full bg-emerald-900/60 border border-emerald-700/50 flex items-center justify-center text-xs text-white font-semibold">
+                    AR
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Scrollable Content Area -->
+        <main class="flex-1 overflow-y-auto hide-scrollbar p-4 space-y-4 pb-24" id="mainContainer">
+            
+            <!-- ================= VIEW 1: OVERVIEW ================= -->
+            <section id="view-overview" class="view-section space-y-4">
+                <!-- Date & Welcome -->
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">WEDNESDAY, OCTOBER 21</div>
+                    <div class="flex justify-between items-end mt-0.5">
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Good afternoon, Aina.</h2>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Here's what's happening across ElminaPark right now.</p>
+                </div>
+
+                <!-- Action Button -->
+                <button onclick="switchTab('find-parking')" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] transition-all text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 text-sm">
+                    <i class="fa-regular fa-compass"></i>
+                    <span>Find a bay</span>
+                </button>
+
+                <!-- 4 Quick Stats Grid -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <!-- Stat 1 -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">AVAILABLE NOW</span>
+                            <div class="w-6 h-6 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs font-bold">P</div>
+                        </div>
+                        <div class="text-2xl font-extrabold text-slate-900">12</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">of 20 total bays</div>
+                    </div>
+
+                    <!-- Stat 2 -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">SMART BAYS</span>
+                            <div class="w-6 h-6 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-extrabold text-slate-900">4</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">bollard protected</div>
+                    </div>
+
+                    <!-- Stat 3 -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">LIVE OCCUPANCY</span>
+                            <div class="w-6 h-6 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-car-side"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-extrabold text-slate-900">25%</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">sensor confirmed</div>
+                    </div>
+
+                    <!-- Stat 4 -->
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden" onclick="switchTab('safety-hub')">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">OPEN REPORTS</span>
+                            <div class="w-6 h-6 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center text-xs">
+                                <i class="fa-solid fa-life-ring"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-extrabold text-slate-900" id="stat-reports-count">2</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Safety Hub</div>
+                    </div>
+                </div>
+
+                <!-- Live Session Banner Card (Dark Green) -->
+                <div class="bg-brand-dark rounded-2xl p-4 text-white relative overflow-hidden shadow-md">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="text-[10px] font-bold tracking-widest text-emerald-400 uppercase">LIVE SESSION</span>
+                        </div>
+                        <span class="bg-emerald-900/80 text-emerald-300 border border-emerald-700/50 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">ON TIME</span>
+                    </div>
+
+                    <div class="py-3 flex items-center space-x-3 text-emerald-100/70">
+                        <div class="w-7 h-7 rounded-full border border-emerald-500/40 flex items-center justify-center text-xs text-emerald-400">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </div>
+                        <span class="text-sm font-medium" id="overview-session-text">No active parking session</span>
+                    </div>
+
+                    <!-- Subtle Map Pattern Graphic Background -->
+                    <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-emerald-800/20 rounded-full blur-xl pointer-events-none"></div>
+                </div>
+
+                <!-- Live Capacity / Parking Availability -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-wider text-emerald-800 uppercase block">LIVE CAPACITY</span>
+                            <h3 class="font-bold text-slate-900 text-base">Parking availability</h3>
+                        </div>
+                        <button onclick="switchTab('find-parking')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center space-x-1">
+                            <span>View map</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- General Zone -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-semibold text-slate-700">General Zone</span>
+                            <span class="text-slate-500 font-mono"><strong class="text-slate-800">8</strong> / 12 free</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">First come, first served</p>
+                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden mt-1">
+                            <div class="bg-emerald-500 h-2 rounded-full" style="width: 66%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Smart Zone -->
+                    <div class="space-y-1 pt-1">
+                        <div class="flex justify-between text-xs">
+                            <span class="font-semibold text-slate-700">Smart Zone</span>
+                            <span class="text-slate-500 font-mono"><strong class="text-slate-800">4</strong> / 8 free</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400">Exact bay reservation</p>
+                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden mt-1">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 50%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex items-center space-x-1.5 text-[10px] text-slate-400">
+                        <i class="fa-solid fa-rotate text-emerald-600"></i>
+                        <span>Availability refreshes after every simulated sensor event.</span>
+                    </div>
+                </div>
+
+                <!-- One Seamless Journey Step Timeline -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold tracking-wider text-emerald-800 uppercase block">ONE SEAMLESS JOURNEY</span>
+                        <h3 class="font-bold text-slate-900 text-sm">Reserve. Verify. Park.</h3>
+                    </div>
+
+                    <div class="space-y-3 relative pl-6 border-l-2 border-dashed border-emerald-200 ml-2 py-1">
+                        <!-- Step 1 -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-0.5 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold border-2 border-white">
+                                <i class="fa-solid fa-parking text-[10px]"></i>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Choose your bay</h4>
+                                    <p class="text-[11px] text-slate-500">Reserve an exact Smart Bay before you arrive.</p>
+                                </div>
+                                <span class="text-xs font-bold text-slate-200">01</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-0.5 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold border-2 border-white">
+                                <i class="fa-solid fa-qrcode text-[10px]"></i>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Verify your plate</h4>
+                                    <p class="text-[11px] text-slate-500">ANPR checks your registered vehicle at entry.</p>
+                                </div>
+                                <span class="text-xs font-bold text-slate-200">02</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-0.5 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold border-2 border-white">
+                                <i class="fa-solid fa-car text-[10px]"></i>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Bollard lowers</h4>
+                                    <p class="text-[11px] text-slate-500">Access unlocks only for authorized booking.</p>
+                                </div>
+                                <span class="text-xs font-bold text-slate-200">03</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative">
+                            <div class="absolute -left-[31px] top-0.5 w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold border-2 border-white">
+                                <i class="fa-regular fa-clock text-[10px]"></i>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Park with confidence</h4>
+                                    <p class="text-[11px] text-slate-500">Live occupancy and fair-use timing protect every user.</p>
+                                </div>
+                                <span class="text-xs font-bold text-slate-200">04</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 2: FIND PARKING ================= -->
+            <section id="view-find-parking" class="view-section hidden space-y-4">
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">LIVE PARKING</div>
+                    <h2 class="text-xl font-bold text-slate-900">Choose the right bay for your visit.</h2>
+                    <p class="text-xs text-slate-500 mt-1">General bays are walk-in. Smart Bays can be reserved exactly and protected by a connected bollard.</p>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="bg-white p-2.5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+                    <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+                        <button onclick="filterBays('all')" id="btn-filter-all" class="flex-1 py-1.5 rounded-lg text-center bg-white text-slate-800 shadow-sm">All zones</button>
+                        <button onclick="filterBays('general')" id="btn-filter-general" class="flex-1 py-1.5 rounded-lg text-center text-slate-500">General Zone</button>
+                        <button onclick="filterBays('smart')" id="btn-filter-smart" class="flex-1 py-1.5 rounded-lg text-center text-slate-500">Smart Zone</button>
+                    </div>
+
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                        <input type="text" id="bay-search" onkeyup="searchBays()" placeholder="Search bay..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <!-- Status Legend -->
+                <div class="flex items-center justify-between text-[11px] text-slate-500 px-1">
+                    <div class="flex items-center space-x-3">
+                        <span class="flex items-center space-x-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span>Available</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span>Reserved</span></span>
+                        <span class="flex items-center space-x-1"><span class="w-2 h-2 rounded-full bg-slate-400"></span><span>Occupied</span></span>
+                    </div>
+                </div>
+
+                <!-- Bays Grid 2 Columns -->
+                <div id="bays-grid" class="grid grid-cols-2 gap-3">
+                    <!-- Dynamic Bays injected via JS -->
+                </div>
+            </section>
+
+            <!-- ================= VIEW 3: VEHICLE & ACCESS ================= -->
+            <section id="view-vehicle-access" class="view-section hidden space-y-4">
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">VEHICLE & ACCESS</div>
+                    <h2 class="text-xl font-bold text-slate-900">Your plate is your parking key.</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Choose your booking, simulate arrival and confirm parking. Your bay unlocks automatically after your plate is verified.</p>
+                </div>
+
+                <!-- Card 1: Registered Vehicle -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Registered vehicle</h3>
+                            <p class="text-[10px] text-slate-400">Used for every Smart Bay verification.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase">Vehicle registration</label>
+                        <div class="flex border-2 border-slate-800 rounded-xl overflow-hidden bg-slate-50">
+                            <div class="bg-blue-900 text-white font-bold text-xs px-2.5 py-2 flex items-center">MY</div>
+                            <input type="text" id="input-plate" value="VCD 2187" class="w-full px-3 py-2 bg-transparent text-slate-900 font-mono font-bold text-base uppercase tracking-wider focus:outline-none">
+                        </div>
+                    </div>
+
+                    <button onclick="saveVehiclePlate()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-xs shadow-sm transition-all">
+                        Save vehicle plate
+                    </button>
+
+                    <div class="flex items-center space-x-1.5 text-[10px] text-slate-400 pt-1">
+                        <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                        <span>Privacy by design. Plate data is used only for access verification.</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Access Simulator -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Arrive & park</h3>
+                            <p class="text-[10px] text-slate-400">Demo steps stand in for the parking cameras.</p>
+                        </div>
+                    </div>
+
+                    <!-- Dropdown -->
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase">Reservation</label>
+                        <select id="sim-reservation-select" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none focus:border-emerald-500">
+                            <option value="S-01">S-01 - UPCOMING</option>
+                            <option value="S-02">S-02 - UPCOMING</option>
+                        </select>
+                    </div>
+
+                    <!-- Active Bay Card Box -->
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-slate-800 text-base" id="sim-bay-id">S-01</div>
+                            <div class="text-[10px] text-slate-400">Level 1</div>
+                        </div>
+                        <div class="text-right space-y-1">
+                            <span class="bg-blue-100 text-blue-700 text-[9px] font-bold px-2 py-0.5 rounded-full block">RESERVED</span>
+                            <span class="text-[10px] text-slate-500 font-semibold block" id="sim-bollard-status"><i class="fa-solid fa-lock text-[9px]"></i> RAISED</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="runANPRVerify()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-2 rounded-xl text-xs flex items-center justify-center space-x-1.5 shadow-sm">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Simulate arrival</span>
+                        </button>
+                        <button onclick="confirmOccupancy()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold py-2.5 px-2 rounded-xl text-xs flex items-center justify-center space-x-1.5">
+                            <i class="fa-solid fa-rss"></i>
+                            <span>Simulate parking</span>
+                        </button>
+                    </div>
+
+                    <p class="pt-2 border-t border-slate-100 text-xs text-slate-500">The bollard lowers after a plate match and rises once the vehicle exits. No manual control is needed.</p>
+                </div>
+
+                <!-- Console Console Signal Log Box -->
+                <div class="bg-brand-dark rounded-xl p-3 text-white text-xs font-mono space-y-1">
+                    <div class="flex justify-between items-center text-[10px] text-emerald-400 border-b border-emerald-900/60 pb-1">
+                        <span><i class="fa-solid fa-rss text-[9px] mr-1"></i> Parking updates</span>
+                        <span class="text-slate-400">Demo</span>
+                    </div>
+                    <div id="sim-log-output" class="text-[11px] text-emerald-200/80 pt-1">
+                        Your arrival, parking and exit updates will appear here.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 4: PARKING SESSION ================= -->
+            <section id="view-parking-session" class="view-section hidden space-y-4">
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">FAIR-USE PARKING</div>
+                    <h2 class="text-xl font-bold text-slate-900">Your live parking session.</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">The timer, grace period and enforcement actions stay transparent at every stage.</p>
+                </div>
+
+                <!-- Big Countdown Dark Card -->
+                <div class="bg-brand-dark rounded-3xl p-5 text-white shadow-xl relative overflow-hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-[10px] font-bold tracking-widest text-emerald-400 uppercase">SENSOR LIVE</span>
+                        </div>
+                        <span class="bg-emerald-900/80 text-emerald-300 border border-emerald-700/50 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">ON TIME</span>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-900/50 border border-emerald-700/50 flex items-center justify-center font-bold text-lg text-emerald-400">P</div>
+                        <div>
+                            <div class="text-[10px] text-slate-400 font-semibold uppercase">Smart Bay</div>
+                            <div class="text-lg font-bold text-white">S-01</div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Timer Large Display -->
+                    <div class="py-2">
+                        <div class="text-5xl font-extrabold font-mono tracking-tight text-white" id="session-timer">63:39</div>
+                        <div class="text-[11px] text-emerald-400/80 mt-1 font-medium">remaining until your booked departure</div>
+                    </div>
+
+                    <div class="pt-3 border-t border-emerald-900/80 grid grid-cols-3 gap-2 text-[11px] text-slate-300">
+                        <div>
+                            <div class="text-[9px] text-slate-400 uppercase">Ends</div>
+                            <div class="font-bold font-mono" id="session-end-time">05:28 AM</div>
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-slate-400 uppercase">Vehicle</div>
+                            <div class="font-bold font-mono" id="session-plate-display">VCD 2187</div>
+                        </div>
+                        <div>
+                            <div class="text-[9px] text-slate-400 uppercase">Penalty</div>
+                            <div class="font-bold font-mono text-emerald-400" id="session-penalty">RM 0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enforcement Flow Card -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div>
+                        <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase block">ORIGINAL ENFORCEMENT FLOW</span>
+                        <h3 class="font-bold text-slate-900 text-sm">Fair, progressive action</h3>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div class="flex space-x-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-regular fa-bell text-[10px]"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-800">0-10 min</div>
+                                <div class="text-[11px] text-slate-500">Grace period + driver warning</div>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-dollar-sign text-[10px]"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-800">After 10 min</div>
+                                <div class="text-[11px] text-slate-500">RM10 + RM2 per overdue minute</div>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-route text-[10px]"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-800">Affected booking</div>
+                                <div class="text-[11px] text-slate-500">Next driver moves to a free Smart Bay</div>
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-3 items-start">
+                            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-shield-cat text-[10px]"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-800">Severe overstay</div>
+                                <div class="text-[11px] text-slate-500">Security escalation status is triggered</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo simulation time jump buttons -->
+                    <div class="pt-3 border-t border-slate-100">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-2 flex items-center space-x-1">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                            <span>Demo controls</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button onclick="addSessionTime(-5)" class="py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-lg">+5 min grace</button>
+                            <button onclick="triggerOverstayPenalty()" class="py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 text-[10px] font-bold rounded-lg">+15 min penalty</button>
+                            <button onclick="triggerEscalation()" class="py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 text-[10px] font-bold rounded-lg">+35 min escalate</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 5: SAFETY HUB ================= -->
+            <section id="view-safety-hub" class="view-section hidden space-y-4">
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">COMMUNITY SAFETY</div>
+                    <h2 class="text-xl font-bold text-slate-900">See something? Send it straight to the right team.</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Report parking hazards, damaged equipment or personal-safety concerns with clear location context.</p>
+                </div>
+
+                <!-- Form Card -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-life-ring"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">New incident report</h3>
+                            <p class="text-[10px] text-slate-400">Takes less than a minute</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="submitIncident(event)" class="space-y-2.5">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Category</label>
+                                <select id="report-category" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
+                                    <option value="Lighting">Lighting</option>
+                                    <option value="Obstruction">Obstruction</option>
+                                    <option value="Damage">Equipment Damage</option>
+                                    <option value="Safety">Personal Safety</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Location</label>
+                                <input type="text" id="report-location" placeholder="e.g. Smart Bay S-04" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Description</label>
+                            <textarea id="report-desc" rows="2" placeholder="Tell the response team what you observed..." required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500"></textarea>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Photo URL (optional for demo)</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-camera absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                                <input type="text" id="report-photo" placeholder="https://..." class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-xs shadow-md shadow-emerald-600/20 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                            <span>Submit incident</span>
+                        </button>
+                    </form>
+
+                    <div class="text-center text-[10px] text-slate-400 flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-shield text-emerald-600"></i>
+                        <span>For immediate danger, contact emergency services first.</span>
+                    </div>
+                </div>
+
+                <!-- Live Queue Feeds -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <div>
+                            <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase block">LIVE QUEUE</span>
+                            <h3 class="font-bold text-slate-800 text-xs">Recent reports</h3>
+                        </div>
+                        <span id="reports-badge" class="w-5 h-5 rounded-full bg-slate-900 text-white text-[10px] font-bold flex items-center justify-center">2</span>
+                    </div>
+
+                    <div id="reports-list" class="space-y-2">
+                        <!-- Dynamic Reports -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 6: ADMIN DASHBOARD ================= -->
+            <section id="view-admin-dashboard" class="view-section hidden space-y-4">
+                <div>
+                    <div class="text-[10px] font-bold tracking-widest text-emerald-800 uppercase">ADMINISTRATION</div>
+                    <h2 class="text-xl font-bold text-slate-900">Township Control Panel</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Manage simulated camera signals, system configuration and active users.</p>
+                </div>
+
+                <!-- Hackathon Demo Box -->
+                <div class="bg-brand-dark p-4 rounded-2xl text-white space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-emerald-400 text-sm"></i>
+                        <h3 class="font-bold text-sm text-white">Hackathon demo mode</h3>
+                    </div>
+                    <p class="text-xs text-emerald-200/80">All hardware and camera signals are simulated safely in real-time within this web preview.</p>
+                    <div class="pt-2 border-t border-emerald-900/80 flex items-center justify-between text-xs">
+                        <span class="text-slate-300">Active Profile</span>
+                        <span class="font-mono font-bold text-emerald-400">Aina Rahman (VCD 2187)</span>
+                    </div>
+                </div>
+
+                <!-- System Controls Card -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <h3 class="font-bold text-slate-900 text-xs uppercase tracking-wider">System Toggles</h3>
+                    
+                    <div class="flex items-center justify-between py-1 border-b border-slate-100 text-xs">
+                        <div>
+                            <div class="font-bold text-slate-800">Automatic ANPR Camera</div>
+                            <div class="text-[10px] text-slate-400">Scan license plates on approach</div>
+                        </div>
+                        <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+                    </div>
+
+                    <div class="flex items-center justify-between py-1 border-b border-slate-100 text-xs">
+                        <div>
+                            <div class="font-bold text-slate-800">Auto Bollard Lowering</div>
+                            <div class="text-[10px] text-slate-400">Trigger hardware upon plate match</div>
+                        </div>
+                        <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+                    </div>
+
+                    <div class="flex items-center justify-between py-1 text-xs">
+                        <div>
+                            <div class="font-bold text-slate-800">Fair-use Overstay Penalty</div>
+                            <div class="text-[10px] text-slate-400">Automated fines for overstaying</div>
+                        </div>
+                        <input type="checkbox" checked class="w-4 h-4 accent-emerald-600">
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation Bar (Phone App Style) -->
+        <nav class="bg-brand-dark border-t border-emerald-950 px-2 py-1.5 flex justify-around items-center absolute bottom-0 left-0 right-0 z-30 shadow-2xl">
+            <!-- Tab 1: Overview -->
+            <button onclick="switchTab('overview')" id="nav-overview" class="nav-btn active flex flex-col items-center py-1 px-2 text-emerald-400 transition-colors">
+                <i class="fa-solid fa-grid-2 text-base mb-0.5"></i>
+                <span class="text-[10px] font-semibold">Overview</span>
+            </button>
+
+            <!-- Tab 2: Find Parking -->
+            <button onclick="switchTab('find-parking')" id="nav-find-parking" class="nav-btn flex flex-col items-center py-1 px-2 text-slate-400 hover:text-emerald-400 transition-colors">
+                <i class="fa-solid fa-square-parking text-base mb-0.5"></i>
+                <span class="text-[10px] font-semibold">Find parking</span>
+            </button>
+
+            <!-- Tab 3: Vehicle & Access -->
+            <button onclick="switchTab('vehicle-access')" id="nav-vehicle-access" class="nav-btn flex flex-col items-center py-1 px-2 text-slate-400 hover:text-emerald-400 transition-colors">
+                <i class="fa-solid fa-expand text-base mb-0.5"></i>
+                <span class="text-[10px] font-semibold">Vehicle & access</span>
+            </button>
+
+            <!-- Tab 4: Parking Session -->
+            <button onclick="switchTab('parking-session')" id="nav-parking-session" class="nav-btn flex flex-col items-center py-1 px-2 text-slate-400 hover:text-emerald-400 transition-colors">
+                <i class="fa-regular fa-clock text-base mb-0.5"></i>
+                <span class="text-[10px] font-semibold">Session</span>
+            </button>
+
+            <!-- Tab 5: Safety Hub -->
+            <button onclick="switchTab('safety-hub')" id="nav-safety-hub" class="nav-btn flex flex-col items-center py-1 px-2 text-slate-400 hover:text-emerald-400 transition-colors relative">
+                <i class="fa-solid fa-life-ring text-base mb-0.5"></i>
+                <span class="text-[10px] font-semibold">Safety Hub</span>
+                <span class="absolute top-1 right-2 w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
+            </button>
+        </nav>
+
+        <!-- User Profile Modal Popover -->
+        <div id="userModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
+            <div class="bg-white w-full max-w-xs rounded-3xl p-5 space-y-4 shadow-2xl animate-in slide-in-from-bottom duration-200">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-800 text-white font-bold flex items-center justify-center text-sm">
+                            AR
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Aina Rahman</h3>
+                            <p class="text-xs font-mono text-slate-400" id="modal-plate-display">VCD 2187</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleUserModal()" class="text-slate-400 hover:text-slate-600 p-1">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-2">
+                    <button onclick="switchTab('admin-dashboard'); toggleUserModal();" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center justify-between">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-slate-500"></i>
+                            <span>Admin dashboard</span>
+                        </span>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                    </button>
+                </div>
+
+                <button onclick="toggleUserModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2.5 rounded-xl">
+                    Close
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // State management
+        const state = {
+            vehiclePlate: "VCD 2187",
+            activeTab: "overview",
+            selectedFilter: "all",
+            timerSeconds: 3819, // 63:39 in seconds
+            bollardRaised: true,
+            activeSession: true,
+            reports: [
+                {
+                    id: 1,
+                    category: "OBSTRUCTION",
+                    title: "A trolley is blocking part of the access lane.",
+                    location: "Level 1 ramp",
+                    time: "Oct 21, 09:11 AM",
+                    status: "OPEN",
+                    statusBg: "bg-emerald-100 text-emerald-800 border-emerald-300"
+                },
+                {
+                    id: 2,
+                    category: "LIGHTING",
+                    title: "Lamp is flickering near the pedestrian walkway.",
+                    location: "General Zone, G-09",
+                    time: "Oct 21, 01:45 AM",
+                    status: "IN REVIEW",
+                    statusBg: "bg-blue-100 text-blue-800 border-blue-300"
+                }
+            ],
+            bays: [
+                { id: "G-01", type: "general", status: "occupied" },
+                { id: "G-02", type: "general", status: "available" },
+                { id: "G-03", type: "general", status: "available" },
+                { id: "G-04", type: "general", status: "occupied" },
+                { id: "G-05", type: "general", status: "available" },
+                { id: "G-06", type: "general", status: "available" },
+                { id: "G-07", type: "general", status: "occupied" },
+                { id: "G-08", type: "general", status: "available" },
+                { id: "G-09", type: "general", status: "available" },
+                { id: "G-10", type: "general", status: "available" },
+                { id: "G-11", type: "general", status: "occupied" },
+                { id: "G-12", type: "general", status: "available" },
+                { id: "S-01", type: "smart", status: "reserved" },
+                { id: "S-02", type: "smart", status: "available" }
+            ]
+        };
+
+        // Initialize App on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderBays();
+            renderReports();
+            startTimer();
+            updateSessionUI();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+            
+            // Show target view
+            const target = document.getElementById(`view-${tabId}`);
+            if(target) target.classList.remove('hidden');
+
+            // Scroll container to top
+            document.getElementById('mainContainer').scrollTop = 0;
+
+            // Update bottom nav active highlight
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-emerald-400');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.remove('text-slate-400');
+                activeNav.classList.add('text-emerald-400');
+            }
+        }
+
+        // Render Parking Bays Grid
+        function renderBays() {
+            const container = document.getElementById('bays-grid');
+            if(!container) return;
+
+            const query = document.getElementById('bay-search')?.value.toLowerCase() || '';
+
+            const filtered = state.bays.filter(bay => {
+                const matchesType = state.selectedFilter === 'all' || bay.type === state.selectedFilter;
+                const matchesSearch = bay.id.toLowerCase().includes(query);
+                return matchesType && matchesSearch;
+            });
+
+            container.innerHTML = filtered.map(bay => {
+                let statusBadge = '';
+                let statusText = 'Sensor clear';
+                let iconColor = 'text-slate-300';
+
+                if(bay.status === 'available') {
+                    statusBadge = '<span class="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">AVAILABLE</span>';
+                    iconColor = 'text-emerald-500';
+                    statusText = 'Sensor clear';
+                } else if(bay.status === 'reserved') {
+                    statusBadge = '<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">RESERVED</span>';
+                    iconColor = 'text-blue-500';
+                    statusText = 'Bollard raised';
+                } else {
+                    statusBadge = '<span class="bg-slate-100 text-slate-600 text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase">OCCUPIED</span>';
+                    iconColor = 'text-slate-300';
+                    statusText = 'Occupied';
+                }
+
+                return `
+                    <div onclick="selectBay('${bay.id}')" class="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-32 cursor-pointer hover:border-emerald-500 transition-all">
+                        <div class="flex justify-between items-start">
+                            <span class="font-extrabold text-slate-800 text-sm font-mono">${bay.id}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex justify-center my-1">
+                            <i class="fa-solid fa-car-side text-3xl ${iconColor}"></i>
+                        </div>
+                        <div class="text-[10px] text-slate-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-rss text-[8px]"></i>
+                            <span>${statusText}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter Bays by Type
+        function filterBays(type) {
+            state.selectedFilter = type;
+            
+            ['all', 'general', 'smart'].forEach(t => {
+                const btn = document.getElementById(`btn-filter-${t}`);
+                if(btn) {
+                    if(t === type) {
+                        btn.className = 'flex-1 py-1.5 rounded-lg text-center bg-white text-slate-800 shadow-sm font-bold';
+                    } else {
+                        btn.className = 'flex-1 py-1.5 rounded-lg text-center text-slate-500';
+                    }
+                }
+            });
+
+            renderBays();
+        }
+
+        function searchBays() {
+            renderBays();
+        }
+
+        function selectBay(bayId) {
+            const bay = state.bays.find(b => b.id === bayId);
+            if(bay && bay.status === 'available') {
+                if(confirm(`Would you like to reserve Smart Bay ${bayId}?`)) {
+                    bay.status = 'reserved';
+                    renderBays();
+                    alert(`Bay ${bayId} reserved successfully! You can now verify plate in Vehicle & Access tab.`);
+                }
+            } else {
+                alert(`Bay ${bayId} is currently ${bay ? bay.status : 'unavailable'}.`);
+            }
+        }
+
+        // Vehicle Plate Management
+        function saveVehiclePlate() {
+            const val = document.getElementById('input-plate').value.trim().toUpperCase();
+            if(val) {
+                state.vehiclePlate = val;
+                document.getElementById('modal-plate-display').innerText = val;
+                document.getElementById('session-plate-display').innerText = val;
+                alert(`Vehicle plate updated to ${val}`);
+            }
+        }
+
+        // Access Simulator Logic
+        function runANPRVerify() {
+            const output = document.getElementById('sim-log-output');
+            output.innerHTML = `<span class="text-amber-400">[ANPR]</span> Scanning plate for S-01... Matched <strong class="text-white">${state.vehiclePlate}</strong>. Authorization GRANTED. Lowering bollard...`;
+            
+            setTimeout(() => {
+                toggleBollard('lower');
+                output.innerHTML += `<br/><span class="text-emerald-400">[HARDWARE]</span> Bollard S-01 lowered successfully. Access granted.`;
+            }, 1000);
+        }
+
+        function confirmOccupancy() {
+            const output = document.getElementById('sim-log-output');
+            output.innerHTML = `<span class="text-blue-400">[SENSOR]</span> Ultrasonic sensor S-01 state changed: <strong class="text-white">OCCUPIED</strong>. Parking session timer activated.`;
+            state.activeSession = true;
+            updateSessionUI();
+        }
+
+        function toggleBollard(action) {
+            const statusEl = document.getElementById('sim-bollard-status');
+            const output = document.getElementById('sim-log-output');
+
+            if(action === 'lower') {
+                state.bollardRaised = false;
+                statusEl.innerHTML = `<i class="fa-solid fa-lock-open text-[9px] text-emerald-500"></i> LOWERED`;
+                output.innerText = `[HARDWARE] Command sent: LOWER bollard S-01.`;
+            } else {
+                state.bollardRaised = true;
+                statusEl.innerHTML = `<i class="fa-solid fa-lock text-[9px]"></i> RAISED`;
+                output.innerText = `[HARDWARE] Command sent: RAISE bollard S-01.`;
+            }
+        }
+
+        // Timer Logic for Live Parking Session
+        function startTimer() {
+            setInterval(() => {
+                if(state.timerSeconds > 0 && state.activeSession) {
+                    state.timerSeconds--;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(state.timerSeconds / 60);
+            const secs = state.timerSeconds % 60;
+            const formatted = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            const timerEl = document.getElementById('session-timer');
+            if(timerEl) timerEl.innerText = formatted;
+        }
+
+        function addSessionTime(mins) {
+            state.timerSeconds += mins * 60;
+            if(state.timerSeconds < 0) state.timerSeconds = 0;
+            updateTimerDisplay();
+            alert(`Added ${mins} minutes to session timer.`);
+        }
+
+        function triggerOverstayPenalty() {
+            document.getElementById('session-penalty').innerText = 'RM 10.00';
+            alert('Simulated: Grace period expired. Overstay fee of RM 10.00 applied.');
+        }
+
+        function triggerEscalation() {
+            document.getElementById('session-penalty').innerText = 'RM 60.00';
+            alert('Simulated: Severe overstay triggered. Safety Hub & Security team notified!');
+        }
+
+        function updateSessionUI() {
+            const overviewText = document.getElementById('overview-session-text');
+            if(overviewText) {
+                if(state.activeSession) {
+                    overviewText.innerText = `Active Session at S-01 (${state.vehiclePlate})`;
+                } else {
+                    overviewText.innerText = `No active parking session`;
+                }
+            }
+        }
+
+        // Safety Hub Laporan Incident Management
+        function submitIncident(event) {
+            event.preventDefault();
+            const category = document.getElementById('report-category').value.toUpperCase();
+            const location = document.getElementById('report-location').value;
+            const desc = document.getElementById('report-desc').value;
+
+            const newReport = {
+                id: Date.now(),
+                category: category,
+                title: desc,
+                location: location,
+                time: "Just now",
+                status: "OPEN",
+                statusBg: "bg-emerald-100 text-emerald-800 border-emerald-300"
+            };
+
+            state.reports.unshift(newReport);
+            renderReports();
+
+            // Reset form
+            document.getElementById('report-location').value = '';
+            document.getElementById('report-desc').value = '';
+            document.getElementById('report-photo').value = '';
+
+            alert('Incident report submitted to ElminaPark Response Team!');
+        }
+
+        function renderReports() {
+            const list = document.getElementById('reports-list');
+            const countBadge = document.getElementById('reports-badge');
+            const overviewStat = document.getElementById('stat-reports-count');
+
+            if(countBadge) countBadge.innerText = state.reports.length;
+            if(overviewStat) overviewStat.innerText = state.reports.length;
+
+            if(!list) return;
+
+            list.innerHTML = state.reports.map(rep => `
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-sm space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-extrabold tracking-wider text-slate-800 uppercase">${rep.category}</span>
+                        <span class="${rep.statusBg} text-[9px] font-extrabold px-2 py-0.5 rounded-full border">${rep.status}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-800 leading-snug">${rep.title}</p>
+                    <div class="flex items-center space-x-3 text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+                        <span class="flex items-center space-x-1">
+                            <i class="fa-solid fa-location-dot text-slate-400"></i>
+                            <span>${rep.location}</span>
+                        </span>
+                        <span class="flex items-center space-x-1">
+                            <i class="fa-regular fa-clock text-slate-400"></i>
+                            <span>${rep.time}</span>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle User Profile Modal
+        function toggleUserModal() {
+            const modal = document.getElementById('userModal');
+            if(modal) modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
