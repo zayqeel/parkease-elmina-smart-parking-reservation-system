@@ -1,4 +1,6 @@
 import { api } from './api';
+import { renderAdminDashboard } from './admin-dashboard';
+import './admin-dashboard.css';
 
 export function connectMobileApp(root) {
   const $ = id => root.querySelector(`#${id}`);
@@ -79,9 +81,13 @@ export function connectMobileApp(root) {
     renderAccess(); renderBays(); tick();
     text('reports-badge', data.reports.length);
     $('reports-list').innerHTML=data.reports.map(r=>card(`<strong>${escape(r.category)} · ${escape(r.status)}</strong><p class="text-xs">${escape(r.description)}</p><small>${escape(r.location)} · ${date(r.created_at).toLocaleString()}</small>${r.image_path ? '<p class="text-xs">Photo URL saved with report</p>' : ''}`)).join('');
-    $('view-admin-dashboard').innerHTML=`<h2 class="font-bold text-xl">Township Control Panel</h2><p class="text-xs">Local simulation · no real payments or security messages</p>${button('Reset demo','resetDemo()')}${card(`<p>${admin.metrics.occupancy_rate}% occupancy · ${admin.metrics.active_reservations} bookings · ${admin.metrics.open_reports} open reports</p>`)}<h3 class="font-bold">Enforcement & bookings</h3>${data.reservations.map(r=>card(`<strong>${escape(r.space.code)} · ${escape(r.vehicle_plate)}</strong><p class="text-xs">${escape(r.status)} · ${escape(r.overstay_stage)} · RM ${Number(r.penalty_amount).toFixed(2)} · ${escape(r.escalation_status)}</p>${r.rerouted_from_space_id ? `<p class="text-xs">Rerouted from ${escape(data.spaces.find(s=>s.id===r.rerouted_from_space_id)?.code)}</p>` : ''}`)).join('')}<h3 class="font-bold">Incidents</h3>${data.reports.map(r=>card(`<p>${escape(r.location)}: ${escape(r.description)}</p><label>Status <select onchange="updateReport(${r.id},this.value)">${['OPEN','IN_REVIEW','RESOLVED'].map(s=>`<option ${s===r.status?'selected':''}>${s}</option>`).join('')}</select></label>`)).join('')}<h3 class="font-bold">Events</h3>${admin.events.map(e=>card(`<p class="text-xs">${escape(e.space.code)} · ${escape(e.event_type)}<br>${escape(e.detail)}</p>`)).join('')}`;
+    $('view-admin-dashboard').innerHTML = renderAdminDashboard(data, admin, escape);
   }
   actions.switchTab = tab => {
+    const isAdmin = tab === 'admin-dashboard';
+    root.querySelector('.phone-container').classList.toggle('admin-mode', isAdmin);
+    if (isAdmin && location.hash !== '#admin') history.replaceState(null, '', '#admin');
+    if (!isAdmin && location.hash === '#admin') history.replaceState(null, '', location.pathname + location.search);
     root.querySelectorAll('.view-section').forEach(el=>el.classList.toggle('hidden',el.id!==`view-${tab}`));
     root.querySelectorAll('.nav-btn').forEach(el=>{el.classList.toggle('text-emerald-400',el.id===`nav-${tab}`);el.classList.toggle('text-slate-400',el.id!==`nav-${tab}`);});
     $('mainContainer').scrollTop=0;
@@ -118,6 +124,9 @@ export function connectMobileApp(root) {
   actions.updateReport=(id,status)=>run(()=>api(`/reports/${id}`,{method:'PATCH',body:JSON.stringify({status})}));
   actions.resetDemo=()=>{if(window.confirm('Restore demo data? This removes current demo bookings and reports.'))run(async()=>{await api('/simulation/reset',{method:'POST'});say('Demo restored.');});};
   Object.assign(window,actions);
+  const onHashChange = () => actions.switchTab(location.hash === '#admin' ? 'admin-dashboard' : 'overview');
+  window.addEventListener('hashchange', onHashChange);
+  onHashChange();
   const vehicleList=document.createElement('div'); vehicleList.className='space-y-2';
   $('input-plate').closest('.bg-white').append(vehicleList);
   $('input-plate').value=''; $('input-plate').placeholder='e.g. ABC 1234'; $('input-plate').maxLength=20;
@@ -134,5 +143,5 @@ export function connectMobileApp(root) {
   refresh().then(()=>{if(!disposed)say('Connected · hardware signals and penalties are simulated.');}).catch(e=>say(`Connection failed: ${e.message}. Start the backend and refresh.`));
   const timer=setInterval(tick,1000);
   const poll=setInterval(()=>{if(!busy)refresh().catch(e=>say(`Connection interrupted: ${e.message}`));},10000);
-  return ()=>{disposed=true;clearInterval(timer);clearInterval(poll);notice.remove();exit.remove();vehicleList.remove();sessionPicker.remove();Object.keys(actions).forEach(key=>delete window[key]);};
+  return ()=>{disposed=true;window.removeEventListener('hashchange',onHashChange);clearInterval(timer);clearInterval(poll);notice.remove();exit.remove();vehicleList.remove();sessionPicker.remove();Object.keys(actions).forEach(key=>delete window[key]);};
 }
