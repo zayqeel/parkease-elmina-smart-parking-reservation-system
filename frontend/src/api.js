@@ -1,6 +1,11 @@
 const API_BASE = import.meta.env.VITE_API_URL || "/api";
+export const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
 export async function api(path, options = {}) {
+  if (DEMO_MODE) {
+    const { demoApi } = await import('./demo-api');
+    return demoApi(path, options);
+  }
   const response = await fetch(`${API_BASE}${path}`, {
     headers: { "Content-Type": "application/json", ...(options.headers || {}) },
     ...options,

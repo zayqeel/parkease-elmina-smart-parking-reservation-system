@@ -2,6 +2,13 @@
 
 ParkEase Elmina is the repository name for the ElminaPark hackathon MVP.
 
+## Shareable browser demo
+
+The GitHub Pages build works without a backend and saves each visitor's demo data
+in their browser. See [publishing and preview instructions](docs/github-pages.md).
+It includes the mobile user experience and desktop admin view (`#admin`).
+Normal local builds continue to use FastAPI + SQLite.
+
 ## Current mobile interface
 
 Users can now add multiple plates in **Vehicle & access → My vehicles**. Plates are unique across the demo, ignoring capitalization and whitespace. Each plate may have one upcoming or checked-in reservation; cancel the upcoming booking or simulate vehicle exit to free it for another slot. The booking dialog selects an available saved plate, and the Session screen lets users switch between active vehicle sessions. Existing user and reservation plates are migrated into the new `vehicles` table at startup without resetting data.

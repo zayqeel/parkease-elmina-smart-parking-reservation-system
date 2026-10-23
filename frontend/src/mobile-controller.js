@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api, DEMO_MODE } from './api';
 import { renderAdminDashboard } from './admin-dashboard';
 import './admin-dashboard.css';
 
@@ -13,6 +13,13 @@ export function connectMobileApp(root) {
   notice.className = 'text-xs p-3 bg-amber-50 text-slate-800 border rounded-xl';
   notice.setAttribute('role', 'status');
   root.querySelector('header').after(notice);
+  const demoNotice = document.createElement('div');
+  if (DEMO_MODE) {
+    demoNotice.className = 'text-xs p-3 bg-emerald-50 text-emerald-900 border';
+    demoNotice.textContent = 'Browser demo · Data is saved only in this browser, not shared with others. Use fictional plates and reports. All hardware and enforcement are simulated.';
+    notice.before(demoNotice);
+    root.querySelector('header .animate-pulse')?.nextElementSibling?.replaceChildren('Browser demo');
+  }
   const say = text => { notice.textContent = text; };
   let sessionId = '';
   const active = () => data?.reservations.find(r => r.user_id === 1 && r.status === 'CHECKED_IN' && String(r.id) === sessionId) || data?.reservations.find(r => r.user_id === 1 && r.status === 'CHECKED_IN');
@@ -139,9 +146,9 @@ export function connectMobileApp(root) {
   $('sim-reservation-select').closest('.bg-white').append(exit);
   root.querySelectorAll('label').forEach(label=>{const input=label.parentElement.querySelector('input,select,textarea');if(input?.id)label.htmlFor=input.id;});
   root.querySelector('.fa-grid-2')?.classList.replace('fa-grid-2','fa-table-cells-large');
-  say('Connecting to parking service…');
-  refresh().then(()=>{if(!disposed)say('Connected · hardware signals and penalties are simulated.');}).catch(e=>say(`Connection failed: ${e.message}. Start the backend and refresh.`));
+  say(DEMO_MODE ? 'Loading your browser demo…' : 'Connecting to parking service…');
+  refresh().then(()=>{if(!disposed)say(DEMO_MODE ? 'Demo ready · No backend needed.' : 'Connected · hardware signals and penalties are simulated.');}).catch(e=>say(DEMO_MODE ? e.message : `Connection failed: ${e.message}. Start the backend and refresh.`));
   const timer=setInterval(tick,1000);
   const poll=setInterval(()=>{if(!busy)refresh().catch(e=>say(`Connection interrupted: ${e.message}`));},10000);
-  return ()=>{disposed=true;window.removeEventListener('hashchange',onHashChange);clearInterval(timer);clearInterval(poll);notice.remove();exit.remove();vehicleList.remove();sessionPicker.remove();Object.keys(actions).forEach(key=>delete window[key]);};
+  return ()=>{disposed=true;window.removeEventListener('hashchange',onHashChange);clearInterval(timer);clearInterval(poll);notice.remove();demoNotice.remove();exit.remove();vehicleList.remove();sessionPicker.remove();Object.keys(actions).forEach(key=>delete window[key]);};
 }
